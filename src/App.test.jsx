@@ -1,35 +1,33 @@
 // src/App.test.jsx
 import { render, screen } from '@testing-library/react';
-import App from './App'; // file App.jsx của bạn
 import '@testing-library/jest-dom';
+import App from './App';
 
-// Test 1: Kiểm tra có hiện logo không
-test('phải hiện logo của trang web', () => {
-  render(<App />);
-
-  const logoImage = screen.getByAltText(''); // vì bạn chưa có alt, tạm tìm bằng img
-  // Cách tốt hơn: tìm bằng id bạn đã có trong code
-  const logoDiv = screen.getByTestId('logo-img'); // mình sẽ thêm data-testid dưới đây
-
-  expect(logoDiv).toBeInTheDocument();
-});
-
-// Test 2: Kiểm tra có hiện tiêu đề đúng không
-test('phải hiện tiêu đề "Learn & Master GitHub Actions"', () => {
-  render(<App />);
-
-  const heading = screen.getByRole('heading', {
-    name: /learn & master github actions/i // tìm chữ gần đúng, không phân biệt hoa/thường
+// ──────────────────────────────────────
+// NHÓM TẤT CẢ TEST CỦA COMPONENT APP
+// ──────────────────────────────────────
+describe('App component', () => {
+  // Render chỉ 1 lần duy nhất cho tất cả test trong nhóm này
+  beforeEach(() => {
+    render(<App />);
   });
 
-  expect(heading).toBeInTheDocument();
-});
+  // Test 1: Logo
+  it('should render the logo', () => {
+    const logo = screen.getByTestId('logo-img');
+    expect(logo).toBeInTheDocument();
+  });
 
-// Test 3: Kiểm tra MainContent có được render không
-test('phải render component MainContent', () => {
-  render(<App />);
+  // Test 2: Tiêu đề chính
+  it('should render the main heading', () => {
+    const heading = screen.getByRole('heading', {
+      name: /learn & master github actions/i
+    });
+    expect(heading).toBeInTheDocument();
+  });
 
-  // Cách đơn giản nhất: kiểm tra xem có chữ nào đặc biệt trong MainContent không
-  // (giả sử MainContent có nút "Show Help" như ví dụ trước)
-  expect(screen.getByRole('button')).toBeInTheDocument();
+  // Test 3: MainContent có nút
+  it('should render MainContent with a button', () => {
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
 });
